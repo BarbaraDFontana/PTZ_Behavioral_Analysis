@@ -1,2 +1,4 @@
 # PTZ_Behavioral_Analysis
-Repository with R codes for setting up data from DLC and creating RF model
+Repository with R codes and labeled behaviors.
+
+All codes used to create the RF model and set up the data are present, full data can be shared upon request.
