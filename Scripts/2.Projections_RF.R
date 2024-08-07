@@ -1,5 +1,5 @@
 #Get libraries and functions
-source('E:/Barbara/Postdoc_Denis(2024-2025)/Data_Analysis/PTZ_Model_Functions.R') 
+source('E:/Barbara/Postdoc_Denis(2024-2025)/PTZ_Projeto/Scripts/PTZ_Model_Functions.R') 
 
 # Set directory that the current file is in as the working directory
 current_path = rstudioapi::getActiveDocumentContext()$path 
@@ -184,18 +184,18 @@ df.training.data.labels <- readRDS('E:/Barbara/Postdoc_Denis(2024-2025)/PTZ_Proj
 
 #Separate depending on behavior label
 dfNormal.Turn <- df.training.data.labels[which(df.training.data.labels$behavior.label == "NT"),]
-dfStraight.Swimming <- df.training.data.labels[which(df.training.data.labels$behavior.label == "ST"),]
+dfStraight.Swimming <- df.training.data.labels[which(df.training.data.labels$behavior.label == "SW"),]
 df.Freezing <- df.training.data.labels[which(df.training.data.labels$behavior.label == "IM"),]
 df.Clonic <- df.training.data.labels[which(df.training.data.labels$behavior.label == "CL"),]
-df.Hypo <- df.training.data.labels[which(df.training.data.labels$behavior.label == "HYPO"),]
+df.TO <- df.training.data.labels[which(df.training.data.labels$behavior.label == "TO"),]
 df.Abnormal <- df.training.data.labels[which(df.training.data.labels$behavior.label == "HYPE"),]
 
 
 #Splitting dataframes - Normal Turn and Straight Swimming 80% for training 20% testing
 data_set_size1= floor(nrow(dfStraight.Swimming)*0.80)
-index.ST <- sample(1:nrow(dfStraight.Swimming), size = data_set_size1)
-df.ST.Training80 <- dfStraight.Swimming[index.ST,]
-df.ST.Testing20 <- dfStraight.Swimming[-index.ST,]
+index.SW <- sample(1:nrow(dfStraight.Swimming), size = data_set_size1)
+df.SW.Training80 <- dfStraight.Swimming[index.SW,]
+df.SW.Testing20 <- dfStraight.Swimming[-index.SW,]
 
 data_set_size1= floor(nrow(dfNormal.Turn)*0.80)
 index.Normal.Turn <- sample(1:nrow(dfNormal.Turn), size = data_set_size1)
@@ -214,11 +214,11 @@ index.Clonic <- sample(1:nrow(df.Clonic), size = data_set_size5)
 df.Clonic.Training80 <- df.Clonic[index.Clonic,]
 df.Clonic.Testing20 <- df.Clonic[-index.Clonic,]
 
-#Splitting dataframes - Hypo 80% for training 20% testing
-data_set_size5= floor(nrow(df.Hypo)*0.80)
-index.Hypo <- sample(1:nrow(df.Hypo), size = data_set_size5)
-df.Hypo.Training80 <- df.Hypo[index.Hypo,]
-df.Hypo.Testing20 <- df.Hypo[-index.Hypo,]
+#Splitting dataframes - TO 80% for training 20% testing
+data_set_size5= floor(nrow(df.TO)*0.80)
+index.TO <- sample(1:nrow(df.TO), size = data_set_size5)
+df.TO.Training80 <- df.TO[index.TO,]
+df.TO.Testing20 <- df.TO[-index.TO,]
 
 #Splitting dataframes - Abnormal 80% for training 20% testing
 data_set_size5= floor(nrow(df.Abnormal)*0.80)
@@ -228,14 +228,14 @@ df.Abnormal.Testing20 <- df.Abnormal[-index.Abnormal,]
 
 
 #Now lets combine the files and create the rds for training the model (max 1:1)
-df.Training.Final <- rbind(df.Normal.Turn.Training80, df.ST.Training80, df.Freezing.Training80, df.Hypo.Training80[sample(nrow(df.Hypo.Training80), 10000),], df.Clonic.Training80, df.Abnormal.Training80[sample(nrow(df.Abnormal.Training80), 10000),])
+df.Training.Final <- rbind(df.Normal.Turn.Training80, df.SW.Training80, df.Freezing.Training80, df.TO.Training80[sample(nrow(df.TO.Training80), 14000),], df.Clonic.Training80, df.Abnormal.Training80[sample(nrow(df.Abnormal.Training80), 14000),])
 
 #Data for testing
-df.Testing.Final <- rbind(df.Normal.Turn.Testing20, df.ST.Testing20, df.Freezing.Testing20, df.Abnormal.Testing20, df.Clonic.Testing20, df.Hypo.Testing20)
+df.Testing.Final <- rbind(df.Normal.Turn.Testing20, df.SW.Testing20, df.Freezing.Testing20, df.Abnormal.Testing20, df.Clonic.Testing20, df.TO.Testing20)
 
 #Count to check amount of behaviors labelled 
 data.frame(table(df.Training.Final$behavior.label))
 
-#Save file in RDS format - using 7.5k max
+#Save file in RDS format - using 14k max
 saveRDS(df.Training.Final, 'E:/Barbara/Postdoc_Denis(2024-2025)/PTZ_Projeto/df_training_15.rds')
 saveRDS(df.Testing.Final, 'E:/Barbara/Postdoc_Denis(2024-2025)/PTZ_Projeto/df_testing_15.rds')

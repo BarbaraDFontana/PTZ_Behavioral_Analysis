@@ -9,14 +9,14 @@ library(janitor)
 set.seed(14)
 
 #Get 'Mode' Function
-source('E:/Barbara/Postdoc_Denis(2024-2025)/Data_Analysis/NTT_analysis_functions.R')
+source('E:/Barbara/Postdoc_Denis(2024-2025)/PTZ_Projeto/Scripts/PTZ_Model_Functions.R') 
 
 #Set directory that the current file is in as the working directory
 current_path = rstudioapi::getActiveDocumentContext()$path 
 setwd(dirname(current_path ))
 
 #Bring the random forest model
-rf.final <- readRDS("E:/Barbara/Postdoc_Denis(2024-2025)/PTZ_Projeto/rf.model.2000.12mtry_15frames.rds")
+rf.final <- readRDS("E:/Barbara/Postdoc_Denis(2024-2025)/PTZ_Projeto/rf.model.1000.18mtry_15frames.rds")
 
 #Bring the final organized data
 l.filenames <- Sys.glob("E:/Barbara/Postdoc_Denis(2024-2025)/PTZ_Projeto/Data/Correct_Format/*.csv")
@@ -67,7 +67,8 @@ l.df.combined <- mapply(function(posture_df, result_df, vel_x) {
 l.df.combined <- lapply(l.df.combined, function(df) {
   df <- df %>%
     mutate(
-      behavior = ifelse(Posture == 1 & as.character(behavior.label) %in% c("HYPO", "IMO"), "TO", as.character(behavior.label)),
+      behavior = ifelse(Posture == 1 & as.character(behavior.label) %in% c("IMO"), "TO", as.character(behavior.label)),
+      behavior = ifelse(Posture == 0 & as.character(behavior.label) %in% c("TO"), "HYPO", as.character(behavior.label)),
       behavior = ifelse(abs.trunk.vel.x < 0.75 & as.character(behavior.label) == "CL", "HYPE", behavior)
     )
   return(df)
@@ -97,7 +98,7 @@ df.results.labeled <- dplyr::inner_join(df.results.labeled, id.table, by='ID')
 df.final <- df.results.labeled
 
 #Create a column for normal behavior (active swimming and percentage active for burst and EM)
-df.final$Normal.Swimming <- df.final$NT + df.final$ST
+df.final$Normal.Swimming <- df.final$NT + df.final$SW
 
 
 # Function to calculate episodes and latency and then add them to final table with the percentages
@@ -171,7 +172,7 @@ df.final <- df.final %>%
   left_join(df_wide, by = c("ID"))
 
 # Create a column for normal behavior (active swimming and percentage active for burst and EM)
-df.final$Normal.Swimming <- df.final$NT + df.final$ST
+df.final$Normal.Swimming <- df.final$NT + df.final$SW
 
 #Because animals that are with no latency (0 value found) do not reach the behaviors so is the max time the latency
 columns_to_update <- c("HYPO_Latency", "HYPE_Latency", "CL_Latency", "TO_Latency", 'IM_Latency')
