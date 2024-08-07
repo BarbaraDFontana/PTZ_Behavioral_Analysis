@@ -1,1 +1,0 @@
-This folder contains all the laballed data used for creating the model. Each file contains the X and Y coordinates of 4 points (head, trunk, tail, mirror) + behavioral label column with the labelled behaviors for each frame.
