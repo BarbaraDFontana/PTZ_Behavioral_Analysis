@@ -1,6 +1,6 @@
 In this folder, there are 5 files necessary for creating the model
 
-Script 1. Setup the data making it clear to read for future analysis.
+1. Folder with labelled behaviors and x,y coordinates for the animals used for creating the model
 Script 2. Creates sliding windows with postural information for the random forest model, creating a final file with testing and training dataset.
 Script 3. Trains the RF model itself, evaluating which MTRY is the best for the model and shows a graph with accuracy calculated for testing data.
 Script 4. Similar to script two, all the data with the sliding windows are set up to analyze the results of animal behavior.
