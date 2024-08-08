@@ -6,4 +6,4 @@ Script 3. Trains the RF model itself, evaluating which MTRY is the best for the 
 Script 4. Similar to script two, all the data with the sliding windows are set up to analyze the results of animal behavior.
 Script 5. RF output for all the data, saving individual values for time analysis and a summary data for overall values. Brings up the IDs so the info of every fish, such as sex, age etc, are presented.
 
-Functions used to calculate projections are also here, based on the work of Kenney Lab (WSU)
+Functions used to calculate projections are also here
