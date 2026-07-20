@@ -55,6 +55,8 @@ This workflow can support:
 
 ---
 
+If you use this code please cite: 10.1016/j.neuroscience.2025.01.048
+
 ## Author
 
 Barbara Dotto Fontana  
